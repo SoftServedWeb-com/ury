@@ -76,6 +76,8 @@ const MenuList: React.FC<MenuListProps> = ({ onItemClick }) => {
                 item_image={item.image}
                 course={item.course}
                 item={item.item}
+                item_category={item.item_category}
+                item_sub_category={item.item_sub_category}
                 onClick={() => onItemClick(item)}
                 disabled={isInteractionDisabled}
               />

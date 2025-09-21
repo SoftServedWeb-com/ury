@@ -304,6 +304,8 @@ export const usePOSStore = create<POSStore>((set, get) => ({
         description: item.description || '',
         special_dish: item.special_dish || 0,
         tax_rate: 0,
+        item_category: item.item_category || '',
+        item_sub_category: item.item_sub_category || '',
       }));
 
       set({ menuItems });
