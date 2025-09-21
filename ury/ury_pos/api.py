@@ -76,7 +76,7 @@ def getRestaurantMenu(pos_profile, room=None, order_type=None):
     menu_items = frappe.get_all(
         "URY Menu Item",
         filters={"parent": menu, "disabled": 0},
-        fields=["item", "item_name", "rate", "special_dish", "disabled", "course"],
+        fields=["item", "item_name", "rate", "special_dish", "disabled", "course","item_category","item_sub_category"],
         order_by="item_name asc"
     )
     
@@ -89,6 +89,8 @@ def getRestaurantMenu(pos_profile, room=None, order_type=None):
             "disabled": item.disabled,
             "item_image": frappe.db.get_value("Item", item.item, "image"),
             "course": item.course,
+            "item_category": item.item_category,
+            "item_sub_category": item.item_sub_category,
         }
         for item in menu_items
     ]
