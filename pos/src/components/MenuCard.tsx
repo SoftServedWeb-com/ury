@@ -26,7 +26,6 @@ const MenuCard: FC<MenuCardProps> = ({
   onClick,
   disabled
 }) => {
-console.log(item_sub_category);
   return (
     <div
       className={cn(
