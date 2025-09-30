@@ -24,7 +24,8 @@ def network_printing(
     file_path=None,
 ):
     try:
-        print_settings = frappe("Network Printer Settings", printer_setting)
+        print_settings = frappe.get_doc("Network Printer Settings", printer_setting)
+        print("print_settings", print_settings.as_dict())
 
         try:
             import cups
@@ -35,25 +36,29 @@ def network_printing(
             cups.setServer(print_settings.server_ip)
             cups.setPort(print_settings.port)
             conn = cups.Connection()
+            print("conn", conn)
         except Exception as e:
+            print("error", e)
             return f"Failed to connect to the printer: {str(e)}"
 
         try:
-            output = PdfWriter()
+            print("print_format", print_format)
+            # output = PdfWriter()
             output = frappe.get_print(
                 doctype,
                 name,
-                print_format,
                 doc=doc,
                 no_letterhead=no_letterhead,
                 as_pdf=True,
-                output=output,
             )
             if not file_path:
-                file_path = os.path.join(
-                    "/", "tmp", f"frappe-pdf-{frappe.generate_hash()}.pdf"
-                )
-            output.write(open(file_path, "wb"))
+                file_path = os.path.join("/", "tmp", f"frappe-pdf-{frappe.generate_hash()}.pdf")
+
+            # 'output' should be the PDF *bytes* returned by frappe.get_print
+            with open(file_path, "wb") as f:
+                f.write(output)
+
+            # Then call the print function
             conn.printFile(print_settings.printer_name, file_path, name, {})
 
             restaurant_table, invoice_printed, name = frappe.db.get_value(
